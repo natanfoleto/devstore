@@ -1,15 +1,16 @@
-import { api } from '@/data/api'
-import type { Product } from '@/data/types/product'
 import Image from 'next/image'
 
-interface ProductPageProps {
+import { api } from '@/data/api'
+import { Product } from '@/data/types/product'
+
+interface ProductProps {
   params: {
     slug: string
   }
 }
 
 async function getProduct(slug: string): Promise<Product> {
-  const response = await api(`/product/${slug}`, {
+  const response = await api(`/products/${slug}`, {
     next: {
       revalidate: 60 * 60, // 1 hour
     },
@@ -20,7 +21,7 @@ async function getProduct(slug: string): Promise<Product> {
   return product
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({ params }: ProductProps) {
   const product = await getProduct(params.slug)
 
   return (
