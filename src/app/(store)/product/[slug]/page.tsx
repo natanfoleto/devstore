@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 import { api } from '@/data/api'
 import { Product } from '@/data/types/product'
+import type { Metadata } from 'next'
 
 interface ProductProps {
   params: {
@@ -19,6 +20,35 @@ async function getProduct(slug: string): Promise<Product> {
   const product = await response.json()
 
   return product
+}
+
+/**
+ * Memoization
+ * Neste caso, como estamos fazendo duas chamadas no getProduct
+ * o react vai deduplicar a chamada, fazendo chamar ela 1x somente
+ */
+
+export async function generateMetadata({
+  params,
+}: ProductProps): Promise<Metadata> {
+  const product = await getProduct(params.slug)
+
+  return {
+    title: product.title,
+  }
+}
+
+export async function generateStaticParams() {
+  const response = await api('/products/featured')
+  const products: Product[] = await response.json()
+
+  // return [{ slug: 'moletom-never-stop-learning' }]
+
+  return products.map((product) => {
+    return {
+      slug: product.slug,
+    }
+  })
 }
 
 export default async function ProductPage({ params }: ProductProps) {
