@@ -7,13 +7,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'github.com',
-      },
-    ],
+    domains: ['github.com'],
   },
 }
 
-export default nextConfig
+module.exports = nextConfig

@@ -1,4 +1,4 @@
-describe('search product', () => {
+describe('search products', () => {
   it('should be able to search for products', () => {
     cy.searchByQuery('moletom')
 
@@ -8,7 +8,7 @@ describe('search product', () => {
     cy.get('a[href^="/product"]').should('exist')
   })
 
-  it('should not be able to visit search page without a search query', () => {
+  it('should not be able to search page without a search query', () => {
     cy.on('uncaught:exception', () => {
       return false
     })
